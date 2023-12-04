@@ -13,6 +13,8 @@ public class BlogControllerTest {
 	//http://localhost:8080/test/hello
 	@GetMapping("/test/hello")
 	public String hello() {
+		int i = 1;
+		System.out.println(i);
 		return "<h1>sdfsdfsdf</h1>";
 	}
 }
