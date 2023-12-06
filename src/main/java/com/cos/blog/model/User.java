@@ -11,7 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-
+// ORM -> Java(다른언어) Object -> 테이블로 매핑해주는 기술
 //Entity : 테이블 화 -> User 클래스가 자동으로 MySQL에 테이블이 생성된다. 
 @Entity
 public class User {
