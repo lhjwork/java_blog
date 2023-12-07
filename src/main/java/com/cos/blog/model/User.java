@@ -4,9 +4,12 @@ import java.sql.Timestamp;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,6 +26,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity //Builder 경우는 가장 아래에 있는 것이 좋다. 
+//@DynamicInsert // insert시에 null인 부분을 제외 시켜준다. 
 public class User {
 	
 	@Id // Primary key
@@ -39,8 +43,11 @@ public class User {
 	@Column(nullable=false,length = 50)
 	private String email;
 	
-	@ColumnDefault("'user'") // -> " 'user' " 홑따옴표가 적용되어 있다.
-	private String role; //Enum을 쓰는게 좋다. //admin , user, manager -> 도메인 설정을 해 줄 수 있다.
+
+	//@ColumnDefault("user")
+	//DB는 RoleType이 없다.
+	@Enumerated(EnumType.STRING)
+	private RoleType role; //Enum을 쓰는게 좋다. //admin , user, manager -> 도메인 설정을 해 줄 수 있다.
 	
 	
 	@CreationTimestamp // 시간이 자동 입력
