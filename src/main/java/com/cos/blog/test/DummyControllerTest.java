@@ -3,6 +3,7 @@ package com.cos.blog.test;
 import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import com.cos.blog.model.User;
 import com.cos.blog.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
+import lombok.experimental.PackagePrivate;
 
 //html 파일이 아니라 data를 리턴해주는 controller = RestController
 @RestController
@@ -24,12 +26,26 @@ public class DummyControllerTest {
 	private UserRepository userRepository;
 	
 	
+	@DeleteMapping("/dummy/user/{id}")
+	public String delete(@PathVariable int id) {
+		
+		try {
+			userRepository.deleteById(id);
+		} catch (IllegalArgumentException e) {
+			return "삭제에 실패하였습니다.";
+		}
+		 
+		return "삭제 되었습니다. id: "+id;
+
+	}
+	
+	
 	//save함수는 id를 전달하지 않으면 insert를 해주고
 	//save함수는 id를 전달하면 해당 id에 대한 데이터가 있으면 update를 해주고
 	//save함수는 id를 전달하면 해당 id에 대한 데이터가 없으면 insert를 해요.
 	//email.password
 	
-	@Transactional
+	@Transactional // 함수 종료시에 자동 commit이 됨
 	@PutMapping("/dummy/user/{id}")
 	public User updateUser(@PathVariable int id, @RequestBody User requestUser) {
 		//json 데이터를 요청 => Java Object(MessageConverter의 Jackson 라이브러리가 변환해서 받아줘요
@@ -48,7 +64,7 @@ public class DummyControllerTest {
 //		userRepository.save(user);
 		
 		//더티 체킹
-		return null;
+		return user;
 	}
 	
 	//{id}주소로 파라미터를 전달 받을 수 있다.
