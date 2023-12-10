@@ -7,7 +7,7 @@
 	<div class="card m-2">
 		<div class="card-body">
 			<h4 class="card-title">제목 적는 부분</h4>
-			<p class="card-text">내용 적는 부분</p>
+		
 			<a href="#" class="btn btn-primary stretched-link">상세보기</a>
 		</div>
 	</div>
