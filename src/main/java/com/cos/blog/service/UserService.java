@@ -21,7 +21,7 @@ public class UserService {
 	@Transactional
 	public int SignUpService(User user) {
 		
-		System.out.println("useruser : "+  user);
+	
 		try {
 			userRepository.save(user);
 			return 1;
