@@ -1,22 +1,32 @@
 package com.cos.blog.controller.api;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cos.blog.dto.ResponseDto;
+import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
+import com.cos.blog.service.UserService;
 
 @RestController
 public class UserApiController {
 	
+	@Autowired
+	private UserService userService;
 
-
+	
 	//@RequestBody가 더이상 필요 없어졌다함.
 	@PostMapping("/api/user")
-	public ResponseDto<Integer> save( User user) {
-		System.out.println("UserApi");
-		return new ResponseDto<Integer>(200,1);
+	public ResponseDto<Integer> save(@RequestBody User user) {
+		System.out.println("UserApi"+ user);
+		user.setRole(RoleType.USER);
+		int result = userService.SignUpService(user);
+		return new ResponseDto<Integer>(HttpStatus.OK,result);
+		
+		
 	}
 }

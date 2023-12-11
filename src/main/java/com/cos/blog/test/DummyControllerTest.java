@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cos.blog.model.RoleType;
@@ -120,8 +121,8 @@ public class DummyControllerTest {
 	
 	//http://localhost:8000/blog/dummuy/join(요청)
 		//http의 body에 username,password,email 데이터를 가지고 (요청) 하면 파라미터에 쏙쏙쏙 들어감
-		@PostMapping("/dummy/objectjoin") // 오브젝트로도 받을 수 있다. 
-		public String Objectjoin(User user){
+		@PostMapping("/dummy/objectjoin") // 오브젝트로도 받을 수 있다.
+		public String Objectjoin(@RequestBody User user){
 			System.out.println("id :"+ user.getId());
 			System.out.println("username :"+ user.getUsername());
 			System.out.println("password :"+ user.getPassword());
