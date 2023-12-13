@@ -12,6 +12,8 @@ import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.service.UserService;
 
+import jakarta.servlet.http.HttpSession;
+
 @RestController
 public class UserApiController {
 	
@@ -25,8 +27,25 @@ public class UserApiController {
 		System.out.println("UserApi"+ user);
 		user.setRole(RoleType.USER);
 		int result = userService.SignUpService(user);
-		return new ResponseDto<Integer>(HttpStatus.OK,result);
+		return new ResponseDto<Integer>(HttpStatus.OK,result); // 자바오브젝트를 JSON으로 변환해서 리턴 (Jackson)
 		
+		
+	}
+	
+	
+	@PostMapping("/api/user/login")
+	public ResponseDto<Integer> login(@RequestBody User user,HttpSession session){
+		System.out.println("UserApiController : login 호출됨");
+		User principal = userService.loginService(user); // 접근주체 (principal)
+		System.out.println("principal 확인"+ principal);
+		if(principal != null) {
+			System.out.println("42");
+			session.setAttribute("principal", principal); // 세션이 만들어 짐
+			System.out.println("44");
+		}else {
+			System.out.println("46");
+		}
+		return new ResponseDto<Integer>(HttpStatus.OK,1);
 		
 	}
 }

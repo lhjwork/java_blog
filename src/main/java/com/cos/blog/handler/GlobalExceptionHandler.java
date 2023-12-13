@@ -18,10 +18,10 @@ public class GlobalExceptionHandler {
 	}
 	
 	//Exception -> 모든 Exception을 받음
-	@ExceptionHandler(value=Exception.class)
-	public ResponseDto<String> handleException(Exception e) {
-		return new ResponseDto<String>(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+		@ExceptionHandler(value=Exception.class)
+		public ResponseDto<String> handleException(Exception e) {
+			return new ResponseDto<String>(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
 
-	}
+		}
 
 }
