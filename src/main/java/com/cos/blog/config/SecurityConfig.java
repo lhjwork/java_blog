@@ -2,39 +2,50 @@ package com.cos.blog.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration // IoC
-public class SecurityConfig {
+// 1. 어노테이션 제거
+@Configuration
+public class SecurityConfig{ // 2. extends 제거
 
- @Bean // IoC가 된다!
- BCryptPasswordEncoder encodePWD() {
-	 // security가 들고 있는 함수
-  return new BCryptPasswordEncoder();
- }
+	// 3. principalDetailService 제거
  
- // 시큐리티가 대신 로그인해주는데 password를 가로채기를 하는데
- // 해당 password가 뭘로 해쉬가 되어 회원가입이 되었는지 알아야
- // 같은 해쉬오 암호화해서 DB에 잇는 해쉬랑 비교할 수 있음.
- 
- 
+	// 4. AuthenticationManager 메서드 생성
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 
- @Bean
- SecurityFilterChain configure(HttpSecurity http) throws Exception {
-  http.csrf().disable() // csrf 토큰 비활성화 (테스트시 걸어두는 게 좋음)
-    .authorizeRequests()
-    .antMatchers("/","/auth/**", "/js/**", "/css/**", "/image/**")
-    .permitAll()
-    .anyRequest()
-    .authenticated()
-    .and()
-    .formLogin()
-    .loginPage("/auth/loginForm")
-    .loginProcessingUrl("/auth/loginProc")
-    .defaultSuccessUrl("/"); // 스프링 시큐리티가 해당 주소로 요청오는 로그인을 가로채서 대신 로그인을 해준다.  
-  
-  return http.build();
- }
+	@Bean // IoC가 되요!!
+	public BCryptPasswordEncoder encodePWD() {
+		return new BCryptPasswordEncoder();
+	}
+	
+	// 5. 기본 패스워드 체크가 BCryptPasswordEncoder 여서 설정 필요 없음.
+
+
+	// 6. 최신 버전(2.7)으로 시큐리티 필터 변경
+	@Bean
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		// 1. csrf 비활성화
+		http.csrf().disable();
+
+		// 2. 인증 주소 설정
+		http.authorizeRequests(
+				authorize -> authorize.antMatchers("/", "/auth/**", "/js/**", "/css/**", "/image/**", "/dummy/**").permitAll()
+						.anyRequest().authenticated()
+		);
+		
+		// 3. 로그인 처리 프로세스 설정
+		http.formLogin(f -> f.loginPage("/auth/loginForm")
+				.loginProcessingUrl("/auth/loginProc")
+				.defaultSuccessUrl("/")
+		);
+
+		return http.build();
+	}
 }
