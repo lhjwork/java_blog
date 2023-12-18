@@ -42,7 +42,6 @@ public class Board {
 	private String content;
 	
 	
-	@ColumnDefault("0") // 데이터가 int 임으로 ''(홑따옴표)가 필요가 없다.
 	private int count; // 조회수
 	
 	
