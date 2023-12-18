@@ -1,4 +1,4 @@
-package com.cos.blog.auth;
+package com.cos.blog.config.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.cos.blog.model.User;
 import com.cos.blog.repository.UserRepository;
-
 
 @Service // Bean 등록
 public class PrincipalDetailService implements UserDetailsService{
@@ -25,6 +24,6 @@ public class PrincipalDetailService implements UserDetailsService{
 				.orElseThrow(()->{
 					return new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다. : "+username);
 				});
-		return new PrincipalDetail(principal); // 시큐리티의 세션에 유저 정보가 저장이 됨. 아이디:user, 패스워드 : 콘솔창
+		return new PrincipalDetail(principal); // 시큐리티의 세션에 유저 정보가 저장이 됨.
 	}
 }

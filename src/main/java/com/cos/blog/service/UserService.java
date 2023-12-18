@@ -18,10 +18,10 @@ public class UserService {
 	@Autowired 
 	private UserRepository userRepository;
 	
+	
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 
-	
 	
 	@Transactional
 	public int SignUpService(User user) {

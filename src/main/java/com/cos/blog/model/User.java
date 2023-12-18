@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
-
+import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +29,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity //Builder 경우는 가장 아래에 있는 것이 좋다. 
 //@DynamicInsert // insert시에 null인 부분을 제외 시켜준다. 
+@Component
 public class User {
 	
 	@Id // Primary key
