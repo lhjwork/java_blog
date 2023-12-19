@@ -33,20 +33,40 @@ public class BoardService {
 		boardRepository.save(board);
 	}
 
+	
+	@Transactional(readOnly=true)
 	public Page<Board> contentList(Pageable pageable){
 		return boardRepository.findAll(pageable);
 	}
 	
 	
+	@Transactional(readOnly=true)
+	public Board boardDetailRead(int id) {
+		
+		return  boardRepository.findById(id).orElseThrow(()-> {
+			return new IllegalArgumentException("글 상세보기 실패:아이디를 찾을 수 없습니다." );
+		});
+	}
+	
+	
+	@Transactional
+	public void boardDelete(int id) {
+		boardRepository.deleteById(id);
+	}
+	
+	
+	@Transactional
+	public void contentModify(int id, Board requestBoard) {
+		Board board = boardRepository.findById(id).orElseThrow(()-> {
+			return new IllegalArgumentException("글 착기 실패:아이디를 찾을 수 없습니다." );
+		}); // 영속화 완료
+		
+		board.setTitle(requestBoard.getTitle());
+		board.setContent(requestBoard.getContent());
+		// 해당 함수로 종료시(Service가 종료될 때) 트랜잭션이 종료된다. 이 때 더티체킹 - 자동 업데이트가 됨 db flush -> commit 이 된다는 뜻
+	}
+	
 	
 }
 
-
-// 전통적 방식의 로그인
-//@Transactional(readOnly = true) //Select 할 때 트랜잭션 시작, 서비스 종료시에 트랜잭션 종료 (정합성: 데이터가 일치하는 가)
-//public User loginService(User user) {
-//
-//	return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
-//	
-//}
 

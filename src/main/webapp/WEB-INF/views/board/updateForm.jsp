@@ -5,20 +5,20 @@
 
 <div class="container">
 	<form>
-	
+		<input type="hidden" id="id" value="${board.id}"/>
 		<div class="form-group">
-			<label for="username">Title</label> <input type="text" class="form-control" placeholder="Enter title" id="title">
+			<label for="username">Title</label> <input value="${board.title}" type="text" class="form-control" placeholder="Enter title" id="title">
 		</div>
 
 		<div class="form-group">
 			<label for="content">Content:</label>
-			<textarea class="form-control summernote" rows="5" id="content"></textarea>
+			<textarea class="form-control summernote" rows="5" id="content">${board.content}</textarea>
 		</div>
 
 	</form>
 
 <!-- javascript로 요청처리를 할 것임으로 form 밖으로 뺌 -->
-	<button id="btn-save" class="btn btn-primary">글쓰기 완료</button>
+	<button id="btn-update" class="btn btn-primary">글수정 완료</button>
 </div>
 
 
