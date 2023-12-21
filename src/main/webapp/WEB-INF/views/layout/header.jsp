@@ -3,6 +3,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <sec:authorize access="isAuthenticated()">
+ <!-- var="principal"의 principal은 PrincipalDetail에 해당한다. -->
 	<sec:authentication property="principal" var="principal"/>
 </sec:authorize>
 
