@@ -6,6 +6,12 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
+
+import com.cos.blog.model.OAuthToken;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -71,7 +77,23 @@ public class UserController {
 				String.class // 응답을 받을 type : String이라는 class
 		);
 		
-		return "카카오 토큰 요청 완료 : 토큰요청에 대한 응답" + response;
+		//Gson, Json Simple, ObjectMapper
+		ObjectMapper objectMapper = new ObjectMapper();
+		OAuthToken oauthToken = null;
+		
+		try {
+			oauthToken = objectMapper.readValue(response.getBody(), OAuthToken.class);
+		} catch (JsonMappingException e) {
+			
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+		
+			e.printStackTrace();
+		}
+		
+		System.out.println("카카오 엑세스 토큰 :" + oauthToken.getAccess_token());
+		
+		return response.getBody();
 	}
 	
 	// 토큰 요청 발급 주소(post)
