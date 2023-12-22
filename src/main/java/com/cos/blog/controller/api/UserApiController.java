@@ -54,8 +54,6 @@ public class UserApiController {
 	public ResponseDto<Integer> update(@RequestBody User user) {//RequsetBody가 안걸려 있으면 json 데이터를 못 받는다. 
 			System.out.println("UserApi"+ user);
 			
-			
-			
 			userService.userInfoUpdate(user);
 			
 			// 여기서는 트랜잭션이 종료되기 때문에 DB에 값은 변경이 됐음
