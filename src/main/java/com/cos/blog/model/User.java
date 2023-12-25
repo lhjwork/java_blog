@@ -27,32 +27,32 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity //Builder 경우는 가장 아래에 있는 것이 좋다. 
+@Entity // Builder 경우는 가장 아래에 있는 것이 좋다.
 //@DynamicInsert // insert시에 null인 부분을 제외 시켜준다. 
 @Component
 public class User {
-	
-	@Id // Primary key
-	@GeneratedValue(strategy=GenerationType.IDENTITY.TABLE) // 프로젝트에서 연결된 DB의 넘버링 전략을 따라간다.
-	private int id; // 시퀀스, auto_increment
-	
-	
-	@Column(nullable=false,length = 30, unique=true)
-	private String username; //아이디
-	
-	@Column(nullable=false,length = 100) // 123456 => 해쉬(비밀번호 암호화)
-	private String password;
-	
-	@Column(nullable=false,length = 50)
-	private String email;
-	
 
-	//@ColumnDefault("user")
-	//DB는 RoleType이 없다.
+	@Id // Primary key
+	@GeneratedValue(strategy = GenerationType.IDENTITY.TABLE) // 프로젝트에서 연결된 DB의 넘버링 전략을 따라간다.
+	private int id; // 시퀀스, auto_increment
+
+	@Column(nullable = false, length = 30, unique = true)
+	private String username; // 아이디
+
+	@Column(nullable = false, length = 100) // 123456 => 해쉬(비밀번호 암호화)
+	private String password;
+
+	@Column(nullable = true, length = 50)
+	private String email;
+
+	// DB는 RoleType이 없다.
+	@ColumnDefault("'user'")
 	@Enumerated(EnumType.STRING)
-	private RoleType role; //Enum을 쓰는게 좋다. //admin , user, manager -> 도메인 설정을 해 줄 수 있다.
+	private RoleType role; // Enum을 쓰는게 좋다. //admin , user, manager -> 도메인 설정을 해 줄 수 있다.
 	
 	
+	private String oauth;//kakao, google
+
 	@CreationTimestamp // 시간이 자동 입력
-	private Timestamp createDate; 
+	private Timestamp createDate;
 }

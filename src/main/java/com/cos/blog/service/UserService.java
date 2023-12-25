@@ -28,6 +28,15 @@ public class UserService {
 	private BCryptPasswordEncoder encoder;
 	
 	
+	@Transactional
+	public User UserInfoFind(String username) {
+		
+		User user = userRepository.findByUsername(username).orElseGet(()->{
+			return new User();
+		});
+		
+		return user;
+	}
 
 	
 	@Transactional
@@ -60,9 +69,15 @@ public class UserService {
 			return new IllegalArgumentException("회원정보를 찾을 수 없습니다.");
 		});
 		
-		String rawPassword = user.getPassword();
-		String encPassword = encoder.encode(rawPassword);
-		persistance.setPassword(encPassword);
+		//Oauth가 있는 애들은 패스워드가 절대 지워지지 않게 함
+		// Validate 체크
+		if(persistance.getOauth()==null || persistance.getOauth().equals("")) {
+			String rawPassword = user.getPassword();
+			String encPassword = encoder.encode(rawPassword);
+			persistance.setPassword(encPassword);
+		}
+		
+		
 		persistance.setEmail(user.getEmail());
 		
 		

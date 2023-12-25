@@ -38,4 +38,6 @@ spring:
       fail-on-empty-beans: false
       
   
-      
+cos:
+#kakao 회원가입의 password를 통일
+  key: cos1234    
