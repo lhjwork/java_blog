@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cos.blog.model.Board;
+import com.cos.blog.model.Reply;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.BoardRepository;
+import com.cos.blog.repository.ReplyRepository;
 import com.cos.blog.repository.UserRepository;
 
 
@@ -24,7 +26,7 @@ public class BoardService {
 	@Autowired 
 	private BoardRepository boardRepository;
 	
-	
+	@Autowired ReplyRepository replyRepository;
 	
 	@Transactional
 	public void contentWrite(Board board, User user) { // title. content
@@ -66,6 +68,18 @@ public class BoardService {
 		// 해당 함수로 종료시(Service가 종료될 때) 트랜잭션이 종료된다. 이 때 더티체킹 - 자동 업데이트가 됨 db flush -> commit 이 된다는 뜻
 	}
 	
+	
+	@Transactional
+	public void replyWrite(User user,int boardId,Reply requestReply ) {
+		
+		Board board = boardRepository.findById(boardId).orElseThrow(()-> {
+			return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 id를 찾을 수 없습니다." );
+		}); // 영속화 완료
+		requestReply.setUser(user);
+		requestReply.setBoard(board);
+		
+		replyRepository.save(requestReply);
+	}
 	
 }
 
