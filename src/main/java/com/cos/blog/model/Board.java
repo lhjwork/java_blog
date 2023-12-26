@@ -17,13 +17,18 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder // 빌더 패턴!!
@@ -51,7 +56,8 @@ public class Board {
 	
 	
 	@OneToMany(mappedBy="board", fetch=FetchType.EAGER) // mappedBy 연관관계의 주인이 아니다. (난 FK가 아니에요.) DB에 컬럼을 만들지 마세요.
-	private List<Reply> reply;
+	@JsonIgnoreProperties({"board"})
+	private List<Reply> replys;
 	
 	
 //	sql로 했을 경우에는
