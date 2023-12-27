@@ -35,8 +35,16 @@ let index = {
 			contentType: 'application/json', // body데이터가 어떤 타입입지(MIME)
 			dataType: "json" // 요청을 서버로해서 응답이 왔을 때 기본적으로 모든 것이 문자열 (생긴게 json이러면) => javascript 오브젝트로 변경
 		}).done(function(resp) {
-			alert("회원가입이 완료되었습니다.");
-			location.href = "/";
+			console.log("eststtsets : "+resp.status);
+			if (resp.status == 500 || resp.status == undefined) {
+				alert("회원가입에 실패하였습니다.");
+			} else {
+				console.log("eststtsets : "+resp);
+				alert("회원가입이 완료되었습니다.");
+				location.href = "/";
+			}
+
+
 		}).fail(function(err) {
 			alert(JSON.stringify(err));
 		});
@@ -45,15 +53,15 @@ let index = {
 		//alert('user의 save함수 호출됨');
 
 		let data = {
-			id:$("#id").val(),
-			username:$("#username").val(),
+			id: $("#id").val(),
+			username: $("#username").val(),
 			password: $("#password").val(),
 			email: $("#email").val()
 		}
 
 		console.log(data);
 
-	
+
 		$.ajax({
 			type: "PUT",
 			url: "/user",

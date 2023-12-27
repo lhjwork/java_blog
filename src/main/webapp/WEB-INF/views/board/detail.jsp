@@ -36,6 +36,8 @@
 
 	<div class="card">
 		<form>
+		<!-- ReplySaveRequestDto를 추가해서 BoardApiController단에서 쉽게 받기위해서 userId 추가함 -->
+			<input type="hidden" id="userId" value="${principal.user.id}"/>
 			<input type="hidden" id="boardId" value="${board.id}" />
 			<div>
 				<div class="card-body">
@@ -55,11 +57,11 @@
 		<ul id="reply--box" class="list-group">
 
 			<c:forEach var="reply" items="${board.replys}">
-				<li id="reply--1" class="list-group-item d-flex justify-content-between">
+				<li id="reply-${reply.id}" class="list-group-item d-flex justify-content-between">
 					<div>${reply.content}</div>
 					<div class="d-flex">
 						<div class="font-italic">작성자 : ${reply.user.username} &nbsp;</div>
-						<button class="badge">삭제</button>
+						<button onClick="index.replyDelete(${board.id},${reply.id})" class="badge">삭제</button>
 					</div>
 				</li>
 			</c:forEach>

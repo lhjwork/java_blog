@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cos.blog.dto.ReplySaveRequestDto;
 import com.cos.blog.model.Board;
 import com.cos.blog.model.Reply;
 import com.cos.blog.model.User;
@@ -26,7 +27,13 @@ public class BoardService {
 	@Autowired 
 	private BoardRepository boardRepository;
 	
-	@Autowired ReplyRepository replyRepository;
+	@Autowired 
+	private ReplyRepository replyRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	
 	
 	@Transactional
 	public void contentWrite(Board board, User user) { // title. content
@@ -70,15 +77,42 @@ public class BoardService {
 	
 	
 	@Transactional
-	public void replyWrite(User user,int boardId,Reply requestReply ) {
+	public void replyWrite(ReplySaveRequestDto replySaveRequestDto) {
 		
-		Board board = boardRepository.findById(boardId).orElseThrow(()-> {
-			return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 id를 찾을 수 없습니다." );
-		}); // 영속화 완료
-		requestReply.setUser(user);
-		requestReply.setBoard(board);
 		
-		replyRepository.save(requestReply);
+//		User user = userRepository.findById(replySaveRequestDto.getUserId()).orElseThrow(()-> {
+//			return new IllegalArgumentException("댓글 쓰기 실패 : 유저 id를 찾을 수 없습니다." );
+//		}); // 영속화 완료
+//		
+//		
+//		Board board = boardRepository.findById(replySaveRequestDto.getBoardId()).orElseThrow(()-> {
+//			return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 id를 찾을 수 없습니다." );
+//		}); // 영속화 완료
+//		
+//		
+//		//이렇게 해서 build 시켜되 됨
+//		Reply reply = Reply.builder()
+//				.user(user)
+//				.board(board)
+//				.content(replySaveRequestDto.getContent())
+//				.build();
+//		
+//		
+//		//위의 주석한 코드를 reply에서 void를 하나 추가해서 아래처럼 짧게해서 해결가능하다. 
+////		Reply reply = new Reply();
+////		reply.update(user, board, replySaveRequestDto.getContent());
+////		
+//		replyRepository.save(reply);
+		
+		
+		replyRepository.mSave(replySaveRequestDto.getUserId(),
+				replySaveRequestDto.getBoardId(), replySaveRequestDto.getContent());
+	}
+	
+	
+	@Transactional
+	public void replyDelete(int replyId) {
+		replyRepository.deleteById(replyId);
 	}
 	
 }

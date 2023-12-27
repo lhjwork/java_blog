@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.cos.blog.dto.ReplySaveRequestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,7 +41,19 @@ public class Reply {
 	@JoinColumn(name="userId")
 	private User user;
 	
-	
 	@CreationTimestamp
 	private Timestamp createDate;
+
+	@Override
+	public String toString() {
+		return "Reply [id=" + id + ", content=" + content + ", board=" + board + ", user=" + user + ", createDate="
+				+ createDate + "]";
+	}
+	
+//	public void update(User user, Board board, String content) {
+//		setUser(user);
+//		setBoard(board);
+//		setContent(content);
+//	}
+//	
 }
